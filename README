@@ -1,0 +1,43 @@
+cs184 - Assignment #2: Basic Shading
+by Peter Bogatsky cs184-ao
+
+Platform: Mac OSX
+IDE: Xcode v2.4
+
+I used Mac OSX's Cocoa framework to add a GUI front-end so that changes can be updated interactively rather than just from the command-line. However, command-line arguments are still supported, as per the instructions below.
+
+In order to run this program with command-line arguments, you need to find the actual binary within the hw2.app package.  This is located in ./hw2.app/Contents/MacOS/hw2.  hw2.app is located in either ./build/Debug or ./build/Release.
+
+There is no error-checking for the format of command-line arguments, so they must be entered correctly. Valid arguments are as follows:
+
+-ka r g b 
+This is the ambient color coefficients of the sphere material. The parameters r g b are numbers between 0 and 1 inclusive.
+
+-kd r g b 
+This is the diffuse color coefficients of the sphere material. The parameters r g b are numbers between 0 and 1 inclusive.
+
+-ks r g b 
+This is the specular color coefficients of the sphere material. The parameters r g b are numbers between 0 and 1 inclusive.
+
+-sp v 
+This is the power coefficient on the specular term. It is a number between 0 and max_float.
+
+-pl x y z r g b
+This adds a point light to the scene. The x y z values are the location of the light. The r g b values are it's color. Note that the x y z values are relative tot he sphere. That is, the center of the sphere is at the origin and the radius of the sphere defines radius one. The Y direction is UP, the X direction is to the right of the screen, and the Z direction is "in your face." The r g b value are between 0 and max_float, NOT between 0 and 1.
+
+-dl x y z r g b
+This adds a directional light to the scene. The x y z values are the direction that the light point in. The r g b values are it's color. See -pl for coordinate system notes. 
+
+-shader [ phong | toon | sss ]
+This selects the shading model to use. The default is "phong." "toon" is a cel-shader for a cartoon-like look, and "sss" is a fake sub-surface scattering shader that I stumbled upon while playing with the program's settings.
+
+Extra Features
+
+I added two additional shaders: a "toon" shader, and a fake sub-surface scattering shader that I came up with experimentally.  These shaders are selectable from the drop-down menu under "shaders" in the "Material" tabview. In addition to being able to shade a sphere, you can also choose to shade a plane by selecting "plane" from the drop-down menu under "object" in the "Material" tabview.
+
+*** NOTE: The main shading code relevant to this project is located in the circleAtX:y:withRadius: method in MyOpenGLView.m ***
+
+Example Invocations:
+
+./hw2 -ka 0.0 0.0 0.0 -kd 0.7 1.0 0.0 -ks 0.9 1.0 0.0 -sp 2.4 -dl 0.7 1.0 1.0 1.0 1.0 1.0 -pl -8.7 -11.1 -11.1 0.0 1.0 1.0 -shader toon
+./hw2 -ka 0.0 0.0 0.0 -kd 1.0 1.0 0.7 -ks 1.0 1.0 1.0 -sp 0.0 -pl 1.0 0.0 1.5 1.0 1.0 1.0 -shader sss
